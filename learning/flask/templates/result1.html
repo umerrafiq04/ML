@@ -1,0 +1,19 @@
+<html>
+<h2>
+Final Result:
+</h2>
+<body>
+    <p>writing python in html page</p>
+    <table border="1">
+{% for key,value in results.items() %}
+<tr>
+    {#This is a comment#}
+    <th>{{key}}</th>
+    <th>{{value}}</th>
+</tr>
+{% endfor %}
+    </table>
+
+</body>
+
+</html>

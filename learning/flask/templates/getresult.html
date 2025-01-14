@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Selection Form</title>
+</head>
+<body>
+    <p>
+<span>flow:getresult.html(data from user)--passs to-->python(submit route function) -->pass to python(successres route(avg))-->result1.html</span>
+    </p>
+    <h1>Choose Your Subject</h1>
+    <form action="/submit" method="POST">
+        <label for="science">Science:</label>
+        <input type="text" id="science" name="science" value="0"><br><br>
+
+        <label for="maths">Maths:</label>
+        <input type="text" id="maths" name="maths" value="0"><br><br>
+
+        <label for="c">C:</label>
+        <input type="text" id="c" name="c" value="0"><br><br>
+
+        <label for="datascience">Data Science:</label>
+        <input type="text" id="datascience" name="datascience" value="0"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
