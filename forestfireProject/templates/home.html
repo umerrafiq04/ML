@@ -3,40 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Form</title>
+    <title>FWI Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            background-color: #3e8e41;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>FWI predicition</h2>
-    <form action="{{url_for('predict_datapoint')}}" method="post">
-        <label for="Temperature">Temperature:</label>
-        <input type="text" id="Temperature" name="Temperature" required><br><br>
+    <h3>FWI Prediction Result: <span id="resultText">{{results}}</span></h3>
+    <h2>FWI Prediction project</h2>
 
-        <label for="RH">RH:</label>
-        <input type="text" id="RH" name="RH" required><br><br>
+    <form id="fwiForm" action="{{url_for('predict_datapoint')}}" method="post">
+        <div class="form-group">
+            <label for="Temperature">Temperature:</label>
+            <input type="text" id="Temperature" name="Temperature" required>
+            <div class="error-message" id="tempError">Please enter a valid temperature.</div>
+        </div>
 
-        <label for="Ws">Ws:</label>
-        <input type="text" id="Ws" name="Ws" required><br><br>
+        <div class="form-group">
+            <label for="RH">RH:</label>
+            <input type="text" id="RH" name="RH" required>
+            <div class="error-message" id="rhError">Please enter a valid relative humidity.</div>
+        </div>
 
-        <label for="Rain">Rain:</label>
-        <input type="text" id="Rain" name="Rain" required><br><br>
+        <div class="form-group">
+            <label for="Ws">Ws:</label>
+            <input type="text" id="Ws" name="Ws" required>
+            <div class="error-message" id="wsError">Please enter a valid wind speed.</div>
+        </div>
 
-        <label for="FFMC">FFMC:</label>
-        <input type="text" id="FFMC" name="FFMC" required><br><br>
+        <div class="form-group">
+            <label for="Rain">Rain:</label>
+            <input type="text" id="Rain" name="Rain" required>
+            <div class="error-message" id="rainError">Please enter valid rainfall data.</div>
+        </div>
 
-        <label for="DMC">DMC:</label>
-        <input type="text" id="DMC" name="DMC" required><br><br>
+        <div class="form-group">
+            <label for="FFMC">FFMC:</label>
+            <input type="text" id="FFMC" name="FFMC" required>
+            <div class="error-message" id="ffmcError">Please enter a valid FFMC.</div>
+        </div>
 
-        <label for="ISI">ISI:</label>
-        <input type="text" id="ISI" name="ISI" required><br><br>
+        <div class="form-group">
+            <label for="DMC">DMC:</label>
+            <input type="text" id="DMC" name="DMC" required>
+            <div class="error-message" id="dmcError">Please enter a valid DMC.</div>
+        </div>
 
-        <label for="Classes">Classes:</label>
-        <input type="text" id="Classes" name="Classes" required><br><br>
+        <div class="form-group">
+            <label for="ISI">ISI:</label>
+            <input type="text" id="ISI" name="ISI" required>
+            <div class="error-message" id="isiError">Please enter a valid ISI.</div>
+        </div>
 
-        <label for="Region">Region:</label>
-        <input type="text" id="Region" name="Region" required><br><br>
+        <div class="form-group">
+            <label for="Classes">Classes:</label>
+            <input type="text" id="Classes" name="Classes" required>
+            <div class="error-message" id="classesError">Please enter a valid class.</div>
+        </div>
 
-        <button type="submit" value="Submit"> predict</button>
+        <div class="form-group">
+            <label for="Region">Region:</label>
+            <input type="text" id="Region" name="Region" required>
+            <div class="error-message" id="regionError">Please enter a valid region.</div>
+        </div>
+
+        <button type="submit">Predict</button>
+
+        <div id="resultMessage" class="success-message" style="display: none;">
+            <h3>FWI Prediction Result: <span id="resultText">{{results}}</span></h3>
+        </div>
     </form>
-    <h2>THE FWI PREDICTION IS {{results}}</h2>
+    <h1>FWI Prediction Result: <span id="resultText">{{results}}</span></h1>
+    <script>
+        // JavaScript for form validation
+        document.getElementById('fwiForm').addEventListener('submit', function(event) {
+            let formIsValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(function(error) {
+                error.style.display = 'none';
+            });
+
+            // Validate each input field
+            const fields = ['Temperature', 'RH', 'Ws', 'Rain', 'FFMC', 'DMC', 'ISI', 'Classes', 'Region'];
+            fields.forEach(function(field) {
+                const input = document.getElementById(field);
+                const error = document.getElementById(field.toLowerCase() + 'Error');
+                if (input.value === '') {
+                    error.style.display = 'block';
+                    formIsValid = false;
+                }
+            });
+
+            if (!formIsValid) {
+                event.preventDefault();
+            } else {
+                document.getElementById('resultMessage').style.display = 'block';
+            }
+        });
+    </script>
+
 </body>
 </html>
